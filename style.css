@@ -51,10 +51,10 @@ button {
   width: 100px;
   height: 50px;
 }
-#karlson:visited, #ccliker:visited, #cbreach:visited {
+#karlson:visited, #ccliker:visited, #cbreach:visited, #bkmlts:visited {
   color: olive;
 }
-#karlson:hover, #ccliker:hover, #cbreach:hover {
+#karlson:hover, #ccliker:hover, #cbreach:hover, #bkmlts:hover {
   background-color: green;
   color: yellow;
 }
