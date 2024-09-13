@@ -26,38 +26,49 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Square properties
-    let x = canvas.width / 2;
-    let y = canvas.height / 2;
-    const size = 50;
-    let dx = 4; // Horizontal speed
-    let dy = 4; // Vertical speed
-    let color = getRandomColor();
+    const numSquares = 10;
+    const squares = [];
 
-    function getRandomColor() {
-      return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    function createSquare() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: 50,
+        dx: (Math.random() - 0.5) * 8, // Random horizontal speed
+        dy: (Math.random() - 0.5) * 8, // Random vertical speed
+        hue: Math.random() * 360 // Random starting hue
+      };
+    }
+
+    // Initialize squares
+    for (let i = 0; i < numSquares; i++) {
+      squares.push(createSquare());
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
 
-      // Draw the square
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, size, size);
+      squares.forEach(square => {
+        // Update color based on hue
+        square.hue = (square.hue + 1) % 360;
+        const color = `hsl(${square.hue}, 100%, 50%)`;
 
-      // Bounce the square
-      if (x + dx > canvas.width - size || x + dx < 0) {
-        dx = -dx;
-        color = getRandomColor(); // Change color on bounce
-      }
-      if (y + dy > canvas.height - size || y + dy < 0) {
-        dy = -dy;
-        color = getRandomColor(); // Change color on bounce
-      }
+        // Draw the square
+        ctx.fillStyle = color;
+        ctx.fillRect(square.x, square.y, square.size, square.size);
 
-      // Update position
-      x += dx;
-      y += dy;
+        // Bounce the square
+        if (square.x + square.dx > canvas.width - square.size || square.x + square.dx < 0) {
+          square.dx = -square.dx;
+        }
+        if (square.y + square.dy > canvas.height - square.size || square.y + square.dy < 0) {
+          square.dy = -square.dy;
+        }
+
+        // Update position
+        square.x += square.dx;
+        square.y += square.dy;
+      });
 
       requestAnimationFrame(animate); // Request next frame
     }
