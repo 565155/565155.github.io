@@ -1,13 +1,74 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Homepage</title>
-    <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <h1>Very cool games</h1>
-    <a href="karlson.html">To karlson</a>
-    <canvas style="width:100%; background-color: #f0f0f0"></canvas>
-  </body>
+<head>
+  <title>Homepage</title>
+  <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    /* Add some basic styling for the canvas */
+    canvas {
+      display: block; /* Remove the default inline display */
+      margin: 0 auto; /* Center the canvas */
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Very cool games</h1>
+  <a href="karlson.html">To karlson</a>
+  <canvas id="bouncyCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('bouncyCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Square properties
+    let x = canvas.width / 2;
+    let y = canvas.height / 2;
+    const size = 50;
+    let dx = 4; // Horizontal speed
+    let dy = 4; // Vertical speed
+    let color = getRandomColor();
+
+    function getRandomColor() {
+      return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+      // Draw the square
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, size, size);
+
+      // Bounce the square
+      if (x + dx > canvas.width - size || x + dx < 0) {
+        dx = -dx;
+        color = getRandomColor(); // Change color on bounce
+      }
+      if (y + dy > canvas.height - size || y + dy < 0) {
+        dy = -dy;
+        color = getRandomColor(); // Change color on bounce
+      }
+
+      // Update position
+      x += dx;
+      y += dy;
+
+      requestAnimationFrame(animate); // Request next frame
+    }
+
+    animate(); // Start the animation
+
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
 </html>
